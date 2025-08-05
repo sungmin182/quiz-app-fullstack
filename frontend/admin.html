@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>퀴즈 관리자 페이지</title>
+    <style>
+      /* 간단한 스타일 */
+      body {
+        font-family: sans-serif;
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+      }
+      form,
+      #question-list {
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 8px;
+      }
+      input,
+      select,
+      button {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+      }
+      button {
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+      }
+      .question-item {
+        border-bottom: 1px solid #eee;
+        padding: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>퀴즈 관리</h1>
+
+    <form id="quiz-form">
+      <h2>새 문제 추가 / 수정</h2>
+      <input type="hidden" id="question-id" />
+      <select id="topic" required>
+        <option value="Environment">환경</option>
+        <option value="Literacy">문해력</option>
+        <option value="Digital">디지털</option>
+      </select>
+      <select id="gradeLevel" required>
+        <option value="low">저학년</option>
+        <option value="high">고학년</option>
+      </select>
+      <input type="text" id="question" placeholder="문제" required />
+      <input type="text" id="optionA" placeholder="선택지 A" required />
+      <input type="text" id="optionB" placeholder="선택지 B" required />
+      <input type="text" id="optionC" placeholder="선택지 C" required />
+      <input type="text" id="optionD" placeholder="선택지 D" required />
+      <select id="correctAnswer" required>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+      </select>
+      <button type="submit">저장</button>
+    </form>
+
+    <div id="question-list">
+      <h2>문제 목록</h2>
+      <div id="questions-container"></div>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
