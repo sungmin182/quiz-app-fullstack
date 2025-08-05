@@ -2,6 +2,7 @@ const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const { open } = require("sqlite");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -9,10 +10,13 @@ const PORT = process.env.PORT || 3000;
 // --- 미들웨어 설정 ---
 app.use(
   cors({
-    origin: "https://quiz-app-fullstack.onrender.com", // 프론트엔드 주소 수정
+    origin: "*", // 모든 도메인에서 접근 허용
   })
 );
 app.use(express.json());
+
+// 정적 파일 서빙 설정
+app.use(express.static(path.join(__dirname, "public")));
 
 let db;
 
@@ -48,6 +52,16 @@ let db;
 // 서버 상태 확인용 기본 경로
 app.get("/", (req, res) => {
   res.send("퀴즈 앱 백엔드 서버가 정상적으로 실행 중입니다.");
+});
+
+// admin.html 페이지 서빙
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin.html"));
+});
+
+// admin.html 직접 접근도 허용
+app.get("/admin.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin.html"));
 });
 
 // 모든 문제 가져오기
