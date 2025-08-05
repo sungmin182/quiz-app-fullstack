@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/api/questions";
+const API_URL = "https://quiz-app-fullstack-1.onrender.com/api/questions";
 const questionsContainer = document.getElementById("questions-container");
 const quizForm = document.getElementById("quiz-form");
 

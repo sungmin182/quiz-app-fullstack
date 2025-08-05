@@ -116,7 +116,9 @@ function convertApiDataToGameFormat(apiQuestions) {
 // 4. 문제 데이터 로드 함수 (API 사용)
 async function loadQuestions() {
   try {
-    const response = await fetch("/api/questions");
+    const response = await fetch(
+      "https://quiz-app-fullstack-1.onrender.com/api/questions"
+    );
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

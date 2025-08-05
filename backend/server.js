@@ -10,7 +10,12 @@ const app = express();
 const PORT = 3000;
 
 // 미들웨어 설정
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://quiz-app-fullstack.onrender.com", // 여기에 본인의 프론트엔드 주소를 정확하게 입력하세요.
+  })
+);
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../frontend")));
 
