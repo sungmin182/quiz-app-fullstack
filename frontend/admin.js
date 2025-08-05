@@ -1,4 +1,4 @@
-const API_URL = "https://quiz-app-fullstack-1.onrender.com/api/questions"; // 본인 백엔드 주소
+const API_URL = "https://quiz-app-fullstack.onrender.com/api/questions"; // 본인 백엔드 주소
 const form = document.getElementById("quiz-form");
 const questionsContainer = document.getElementById("questions-container");
 

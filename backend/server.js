@@ -8,7 +8,7 @@ const PORT =
   process.env.PORT | // --- 미들웨어 설정 ---
   app.use(
     cors({
-      origin: "https://quiz-app-fullstack.onrender.com", // 프론트엔드 주소만 허용
+      origin: "https://quiz-app-fullstack-1.onrender.com", // 프론트엔드 주소만 허용
     })
   );
 app.use(express.json());

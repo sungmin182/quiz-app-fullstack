@@ -117,7 +117,7 @@ function convertApiDataToGameFormat(apiQuestions) {
 async function loadQuestions() {
   try {
     const response = await fetch(
-      "https://quiz-app-fullstack-1.onrender.com/api/questions"
+      "https://quiz-app-fullstack.onrender.com/api/questions"
     );
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
