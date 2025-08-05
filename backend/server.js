@@ -4,13 +4,14 @@ const { open } = require("sqlite");
 const cors = require("cors");
 
 const app = express();
-const PORT =
-  process.env.PORT | // --- 미들웨어 설정 ---
-  app.use(
-    cors({
-      origin: "https://quiz-app-fullstack-1.onrender.com", // 본인의 프론트엔드 주소
-    })
-  );
+const PORT = process.env.PORT || 3000;
+
+// --- 미들웨어 설정 ---
+app.use(
+  cors({
+    origin: "https://quiz-app-fullstack.onrender.com", // 프론트엔드 주소 수정
+  })
+);
 app.use(express.json());
 
 let db;
@@ -76,15 +77,24 @@ app.post("/api/questions", async (req, res) => {
       correctAnswer,
     } = req.body;
 
-    // [수정된 부분] SQL 쿼리에 전달할 실제 값들을 배열로 추가했습니다.
+    // SQL 쿼리에 매개변수 추가
     const result = await db.run(
-      "INSERT INTO questions (topic, gradeLevel, question, optionA, optionB, optionC, optionD, correctAnswer) VALUES (?,?,?,?,?,?,?,?)"
+      "INSERT INTO questions (topic, gradeLevel, question, optionA, optionB, optionC, optionD, correctAnswer) VALUES (?,?,?,?,?,?,?,?)",
+      [
+        topic,
+        gradeLevel,
+        question,
+        optionA,
+        optionB,
+        optionC,
+        optionD,
+        correctAnswer,
+      ]
     );
 
-    const newQuestion = await db.get(
-      "SELECT * FROM questions WHERE id =?",
-      result.lastID
-    );
+    const newQuestion = await db.get("SELECT * FROM questions WHERE id = ?", [
+      result.lastID,
+    ]);
     res.status(201).json(newQuestion);
   } catch (err) {
     console.error("Failed to add question:", err);
@@ -95,7 +105,7 @@ app.post("/api/questions", async (req, res) => {
 // 문제 삭제하기
 app.delete("/api/questions/:id", async (req, res) => {
   try {
-    await db.run("DELETE FROM questions WHERE id =?", req.params.id);
+    await db.run("DELETE FROM questions WHERE id = ?", [req.params.id]);
     res.json({ message: "문제가 성공적으로 삭제되었습니다." });
   } catch (err) {
     console.error("Failed to delete question:", err);
