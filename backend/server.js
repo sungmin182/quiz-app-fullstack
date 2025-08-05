@@ -8,7 +8,7 @@ const PORT =
   process.env.PORT | // --- 미들웨어 설정 ---
   app.use(
     cors({
-      origin: "https://quiz-app-fullstack-1.onrender.com", // 프론트엔드 주소만 허용
+      origin: "https://quiz-app-fullstack-1.onrender.com", // 본인의 프론트엔드 주소
     })
   );
 app.use(express.json());
@@ -19,7 +19,7 @@ let db;
 (async () => {
   try {
     db = await open({
-      filename: "./database.db", // Render는 디스크가 초기화될 수 있으므로, 재시작 시 파일이 생성됩니다.
+      filename: "./database.db",
       driver: sqlite3.Database,
     });
 
@@ -44,12 +44,12 @@ let db;
 
 // --- API 엔드포인트 ---
 
-// [추가] 서버 상태 확인용 기본 경로
+// 서버 상태 확인용 기본 경로
 app.get("/", (req, res) => {
   res.send("퀴즈 앱 백엔드 서버가 정상적으로 실행 중입니다.");
 });
 
-// 모든 문제 가져오기 (GET /api/questions)
+// 모든 문제 가져오기
 app.get("/api/questions", async (req, res) => {
   try {
     const questions = await db.all("SELECT * FROM questions ORDER BY id DESC");
@@ -62,7 +62,7 @@ app.get("/api/questions", async (req, res) => {
   }
 });
 
-// 새로운 문제 추가하기 (POST /api/questions)
+// 새로운 문제 추가하기
 app.post("/api/questions", async (req, res) => {
   try {
     const {
@@ -75,10 +75,12 @@ app.post("/api/questions", async (req, res) => {
       optionD,
       correctAnswer,
     } = req.body;
+
+    // [수정된 부분] SQL 쿼리에 전달할 실제 값들을 배열로 추가했습니다.
     const result = await db.run(
       "INSERT INTO questions (topic, gradeLevel, question, optionA, optionB, optionC, optionD, correctAnswer) VALUES (?,?,?,?,?,?,?,?)"
     );
-    // 방금 추가된 문제를 다시 조회해서 반환
+
     const newQuestion = await db.get(
       "SELECT * FROM questions WHERE id =?",
       result.lastID
@@ -90,7 +92,7 @@ app.post("/api/questions", async (req, res) => {
   }
 });
 
-// 문제 삭제하기 (DELETE /api/questions/:id)
+// 문제 삭제하기
 app.delete("/api/questions/:id", async (req, res) => {
   try {
     await db.run("DELETE FROM questions WHERE id =?", req.params.id);
@@ -105,5 +107,5 @@ app.delete("/api/questions/:id", async (req, res) => {
 
 // --- 서버 시작 ---
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
